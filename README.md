@@ -31,32 +31,32 @@ previous assignment.
 
 1. ***What is the advantage of the ChunkList approach as opposed to a standard 
   the link list implementation?*** (1 point)
-   > Your answer here
+   > There is fixed sized array of elements, so the Chunklist is faster than the link list implementation.
    
 
 2. ***What would be the implications of increasing the size of ARRAY_SIZE to a 
    very large value?  For example, what if you plan to use this structure to 
    store around 1,000 values and you made ARRAY_SIZE 1,000?***
    
-   > Your answer here
+   > The chunk has more spaces for data. 
 
    
 3. ***What is the Big O of:*** (1 point each)
    
    | Function | Big O (worst case) |
    | ---------| ------------------ |
-   | Append   | Your answer here   |
-   | Remove   | Your answer here   |
-   | GetLength| Your answer here   |
-   | GetIndex | Your answer here   |
-   | Contains | Your answer here   |  
+   | Append   | Big O(n)           |
+   | Remove   | Big O(n)           |
+   | GetLength| Big O(n)           |
+   | GetIndex | Big O(n)           |
+   | Contains | Big O(n)           |  
  
 
 4. ***Compare placing a new element into the *FIRST* available empty space 
    versus placing a new element in the tail chunk. What are the advantages and 
    disadvantages to automatically placing values at the tail node?*** (1 point)
    
-   > Your answer here
+   > It takes more time to find the space.
 
 
 ## Introduction
