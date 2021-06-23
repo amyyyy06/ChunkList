@@ -31,7 +31,7 @@ previous assignment.
 
 1. ***What is the advantage of the ChunkList approach as opposed to a standard 
   the link list implementation?*** (1 point)
-   > There is fixed sized array of elements, so the Chunklist is faster than the link list implementation.
+   > There is fixed sized array of elements, so the Chunklist is faster than the link list implementation. 
    
 
 2. ***What would be the implications of increasing the size of ARRAY_SIZE to a 
