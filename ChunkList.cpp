@@ -9,245 +9,241 @@ template<class T>
 ChunkList<T>::ChunkList() {
     head = nullptr;
     tail = nullptr;
+    iterNode = head;
     arrPos = 0;
     listLen = 0;
     numChunks = 0;
-
-/*
-   Node* tmpNode;
-
-   while(head != nullptr){
-       tmpNode=head;
-       delete tmpNode;
-   }
-    listLen = 0;
-*/
 
 }
 
 template<class T>
 ChunkList<T>::ChunkList(T *arr, int arrLen) {
-
-
-
-    if(arrLen<0){
-        throw InvalidArrayLength ();
+    if(arrLen < 0)
+    {
+        throw InvalidArrayLength();
     }
+//initialize the iterator to start at the beginning of the list.
+    listLen = 0;
+    numChunks = 0;
+
+
+    for(int i = 0; i < arrLen; i++)
+    {
+        Append(arr[i]);
+    }
+
+    iterNode = head;
+    arrPos = 0;
 
 }
 
 template<class T>
-ChunkList<T>::~ChunkList() {
-    Node*tmpNode;
+ChunkList<T>::~ChunkList() { //remove all the nodes in the list.
+    Node* current = head;
 
-    while(head !=nullptr){
-        tmpNode = head;
-        head = head->next;
-        delete tmpNode;
+    while(current != nullptr)
+    {
+        Remove(current->values[current->len - 1]);
+
+        current = current->next;
     }
 
 }
 
 template<class T>
 void ChunkList<T>::Append(T value) {
+    if(IsEmpty() || tail->len >= ARRAY_SIZE)
+    {
+        Node* temp = new Node();
+        temp->next = nullptr;
+        temp->len = 0;
+        temp->values[temp->len++] = value;
 
-   // Node* location = new Node; // new node address created
-   // location -> values= value; //set all the values of the node
-   // location -> next = head;  //set all the values of the node
-   // head = location;
-   // listLen++;  //book keeping
-   //Node*curr= head;//
-
-   //head-> next, head->values //only know
-
-    Node* position = head;
-    while(position != nullptr){
-        for(int i = 0; i < 8; i++){
-            if(position->values == nullptr){
-                position -> values[i]= value;
-                position -> next = tail;
-                tail = position;
-
-            }
-            else if(position ->values != nullptr){
-                Node* location = new Node;
-                location -> values[i]= value;
-                location -> next = head;
-                head = location;
-            }
-
+        if(IsEmpty())
+        {
+            head = temp;
+        }
+        else
+        {
+            tail->next = temp;
         }
 
+        tail = temp;
         listLen++;
-
+        numChunks++;
     }
-
-
-
-
-
-
-
-
-
+    else
+    {
+        tail->values[tail->len++] = value;
+        listLen++;
+    }
 
 }
 
 template<class T>
 void ChunkList<T>::Remove(T value) {
-    Node*prev = nullptr;
-    Node*curr = head;
-    while(curr!=nullptr) {  //middle case
-        // finds the location of the node we want
-        if (curr->values == &value) {
-           // prev->next = curr->next;
-            listLen--;
-            //delete curr;
-            break;
-        }
-       // prev = curr;
-       // curr = curr->next;
-        curr = prev;
-        prev = prev->next;
-
-       // listLen--;
-    }
-    if(prev == nullptr){
-        head = curr->next;
-        delete curr;
-    }
-    else if(curr != nullptr){
-        prev->next= curr->next;
-        delete curr;
-    }
-    if(IsEmpty()){
+    if(IsEmpty())
+    {
         throw EmptyList();
     }
+    Node* curr = head;
+    Node* prev = curr;
+    while(curr != nullptr)
+    {
+        for(int i = 0; i < curr->len; i++)
+        {
+            if(curr->values[i] == value) // if the value is found
+            {
+                curr->len--;
+                listLen--;
 
+                if(curr->len == 0)
+                {
+                    if(!IsEmpty())
+                    {
+                        if(curr == head)
+                        {
+                            head = head->next;
+                        }
+                        else if(curr == tail)
+                        {
+                            tail = prev;
+                        }
+                        else
+                        {
+                            prev->next = curr->next;
+                        }
+                    }
+                    else
+                    {
+                        head = nullptr;
+                        tail = nullptr;
+                    }
 
-    /*
-     * int location = 0;
-     * for (location=0; location<length; location+1){
-         if(values[location]==value)
-         break;
-         }
-         for (int 1= location; i<length-1;i++){
-         values[i]=values[i+1];
+                    delete curr;
+                    numChunks--;
+                }
+                else
+                {
+                    for(int j = i; j < curr->len; j++)
+                    {
+                        curr->values[j] = curr->values[j + 1];
+                    }
+                }
 
-         }
-         length--;
-     */
+                return;
+            }
+        }
 
+        prev = curr;
+        curr = curr->next;
+    }
 
 
 }
 
 template<class T>
 int ChunkList<T>::GetLength() {
-
+//return the length of the entire list
     return listLen;
 }
 
 template<class T>
 double ChunkList<T>::LoadFactor() {
-
-    //load_factor = listLen/(ARRAY_SIZE*numChunks);
-
-    if(IsEmpty()){
+    if(IsEmpty())
+    {
         throw EmptyList();
     }
-    return 0;
+
+    return (double)listLen / (double)(numChunks * ARRAY_SIZE);
 }
 
 template<class T>
 bool ChunkList<T>::Contains(T value) {
 
-
-  // keep track where i am
-    Node* curr = head;  //memory
-
-
-
-    while(curr != nullptr){
-        for(int i = 0; i<ARRAY_SIZE; i++ ){
-            if(curr -> values == &value){
-                return true;
-            }
-            curr = curr -> next; // move to next node
-
-        }
-
-    }
-
-    if(IsEmpty()){
+    if (!head) { //if the list is empty
         throw EmptyList();
     }
-
-
+//check the array of each node until you find value or you reach the end of the list without finding value
+    Node* current = head;
+    while (current != nullptr) {
+        for (int i = 0; i < current->len; i++) {
+            if (current->values[i] == value) {
+                return true;
+            }
+        }
+        current = current->next;
+    }
     return false;
+
+
 
 }
 
 template<class T>
-T ChunkList<T>::GetIndex(int i) {
-  //  return NULL;
-
-    if(IsEmpty()){
+T ChunkList<T>::GetIndex(int i) { //returns the value at index i with reference to the entire list.
+    if(IsEmpty()) {
         throw EmptyList();
     }
 
-    if(i<0){
+    if(i < 0 || i >= listLen) //if you provide a bad index.
+    {
         throw IndexOutOfBounds();
     }
 
+    Node* curr = head;
+    while(curr != nullptr) {
+        if(i < curr->len) {
+           // return curr->values[i]; //i is within the curr node array and we can return the element
+           break;
+        }
 
+        i -= curr->len;
+        curr = curr->next;
+    }
+    return curr->values[i];
 
 }
 
 template<class T>
 void ChunkList<T>::ResetIterator() {
-   // Node* iterNode;     // What node are were currently on?
-   // int arrPos;
-   //arrPos = ;
-    iterNode = head;
-   // Node*arrPos= nullptr;
 
-
-
-  // arrPos = head;
-  /*
-    iterNode = head;
-    arrPos = 0;
-*/
-
-
+    iterNode = head; //to the first node of the list
+    arrPos = 0;  //to point to the first index.
 
 
 }
 
 template<class T>
 T ChunkList<T>::GetNextItem() {
-   // Node* iterNode;     // What node are were currently on?
-   // int arrPos;
-   // return NULL;
+    if(arrPos >= listLen) //if the user tries to get another item and no item is available.
+    {
+        throw IteratorOutOfBounds();
+    }
+    int localIndex = arrPos;
 
+    Node* curr = head;
+    while(curr != iterNode)
+    {
+        localIndex -= curr->len;
+        curr = curr->next;
+    }
 
-  // T currItem = arrPos -> value; // current item
-  //  arrPos = arrPos-> next;    // move curPos to next node
- //  return currItem;
+    if(localIndex >= curr->len)
+    {
+        localIndex = 0;
+        iterNode = iterNode->next;
+        curr = iterNode;
+    }
 
-
-  //  T currItem = iterNode -> values;
- //   iterNode = iterNode-> next;
- //   return currItem;
-
- //  if(!currItem){
-//       throw IteratorOutOfBounds();
-  // }
+    arrPos++;
+    return iterNode->values[localIndex];
 }
 
 template<class T>
 bool ChunkList<T>::IsEmpty() {
-    return false;
+    return listLen == 0;
+    //return head == nullptr;
+   // return false;
 }
 

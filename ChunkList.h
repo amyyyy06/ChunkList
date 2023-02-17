@@ -46,48 +46,47 @@ public:
 template<class T>
 class ChunkList {
 public:
-    // Constructors
+    // default Constructors
     ChunkList();
+    //Pre: node
+    //Post: Creates a new, empty ChunkList object.
 
+    //second Constructors
     ChunkList(T arr[], int arrLen);
-    //Pre: List has been initialized.
-    //Post: Append all the values from the list.
 
     // Deconstructor
     ~ChunkList();
-    //Pre: List has been initialized.
-    //Post: List is empty; all items have been deallocated.
 
     // Add/remove elements
     void Append(T value);
     //Pre: List has been initialized.
-    //Post: Added value to the end of the list.
+    //Post: Added value to the end of the ChunkList.
     void Remove(T value);
-    //Pre: List has been initialized.
-    //Post: First value is removed.
+    //Pre: the chunkList contains values
+    //Post: if the value is found, if it's the last item in a node, delete the node, reallocate the pointers and
+    //      decrement numChunks, otherwise, shift all the values in the array by 1 to overwrite the value
 
     // Stuff to find out about the ChunkList
     int GetLength();
     //Pre: List has been initialized.
-    //Post: Function value = number of items in list.
+    //Post: return Function value = number of items in list.
     double LoadFactor();
-    //Pre: List has been initialized.
-    //Post: Calculate a percentage of stored items in the Chunklist.
+    //Pre: chunkList has been initialized.
+    //Post: return Calculate a percentage of stored items in the Chunklist.
     bool Contains(T value);
-    //Pre: List has been initialized.
-    //Post: If there is a value in the Chunk list. Otherwise it will return false. Or go to error.
+    //Pre: chunkList is defined.
+    //Post: If there is a value in the Chunk list return true. Otherwise it will return false. Or go to error.
 
     // Accessing elements
     T GetIndex(int i);
-    //Pre: List has been initialized.
+    //Pre: chunkList is defined.
     //Post: Look the entire list and return the value at index i.
     void ResetIterator();
-    //Pre: List has been initialized.
+    //Pre: still items left in the chunkList
     //Post: Array position and interNode are the first position to list.
     T GetNextItem();
     //Pre: List has been initialized.
     //Post: Current item moves to next position.
-
     bool IsEmpty();
     //Pre: List has been initialized.
     //Post: Function value = (list is empty)

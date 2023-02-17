@@ -31,23 +31,23 @@ previous assignment.
 
 1. ***What is the advantage of the ChunkList approach as opposed to a standard 
   the link list implementation?*** (1 point)
-   > There is fixed sized array of elements, so the Chunklist is faster than the link list implementation. 
-   
+   > The advantage of using the ChunkList approach over the standard linked list implementation is that it allocates memory in larger chunks, leading to fewer memory allocation and deallocation operations, and thus faster performance.
+
 
 2. ***What would be the implications of increasing the size of ARRAY_SIZE to a 
    very large value?  For example, what if you plan to use this structure to 
    store around 1,000 values and you made ARRAY_SIZE 1,000?***
    
-   > The chunk has more spaces for data. 
+   > If you increase the ARRAY_SIZE to a very large value, it may use more memory and take longer to search through, resulting in slower performance.
 
-   
+
 3. ***What is the Big O of:*** (1 point each)
    
    | Function | Big O (worst case) |
    | ---------| ------------------ |
-   | Append   | Big O(n)           |
+   | Append   | Big O(1)           |
    | Remove   | Big O(n)           |
-   | GetLength| Big O(n)           |
+   | GetLength| Big O(1)           |
    | GetIndex | Big O(n)           |
    | Contains | Big O(n)           |  
  
@@ -56,7 +56,11 @@ previous assignment.
    versus placing a new element in the tail chunk. What are the advantages and 
    disadvantages to automatically placing values at the tail node?*** (1 point)
    
-   > It takes more time to find the space.
+   > When placing a new element into the first available empty space, it may be faster, but it can cause the list to become fragmented, and may take more time to find an empty space. In contrast, automatically placing values at the tail node can prevent fragmentation but may result in slower performance when adding elements to the list.
+
+
+
+
 
 
 ## Introduction

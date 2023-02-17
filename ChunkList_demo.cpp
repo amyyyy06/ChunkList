@@ -19,10 +19,12 @@ int main(){
         chkList.Append(i);
         cout << i << ", ";
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {  //int i = 0; i < 10; i++
         chkList.Append(-i);
         cout << -i << ", ";
     }
+    cout << endl << endl; //added
+    cout << chkList.GetLength() << "numbers are here" << endl; //addded
     cout << endl << endl;
 
     cout << "Checking each index:" << endl;
@@ -32,10 +34,10 @@ int main(){
 
     cout << endl;
 
-    if (chkList.Contains(0)) {
-        cout << "chkList contains 0" << endl;
+    if (chkList.Contains(2)) { //0
+        cout << "chkList contains 2" << endl; //"chkList contains 0"
     } else {
-        cout << "chkList does NOT contains 0" << endl;
+        cout << "chkList does NOT contains 2" << endl; //"chkList does NOT contains 0"
     }
 
     if (chkList.Contains(1000)) {
@@ -77,4 +79,6 @@ int main(){
         cout << error.Msg() << endl;
     }
     return 0;
+
+
 }
